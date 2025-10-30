@@ -8,7 +8,7 @@ vim.opt.fillchars:append({ eob = " " })
 
 require("config.lazy")
 
-local vscode = require("themes")
+local vscode = require("theme")
 vscode.setup()
 vscode.load()
 
