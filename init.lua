@@ -5,6 +5,9 @@ vim.opt.tabstop = 4
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.fillchars:append({ eob = " " })
+vim.o.cursorline = true
+
+vim.keymap.set("n", "<leader>fp", "<cmd>Telescope project<cr>", { desc = "Projects" })
 
 require("config.lazy")
 

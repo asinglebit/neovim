@@ -27,7 +27,7 @@ return {
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "rust_analyzer" },
+				ensure_installed = { "rust_analyzer", "ts_ls" },
 				automatic_installation = true,
 			})
 		end,
@@ -57,6 +57,41 @@ return {
 					capabilities = capabilities,
 				},
 			}
+		end,
+	},
+	{
+		"hrsh7th/cmp-nvim-lsp", -- for completion capabilities
+		config = function()
+			local cmp_nvim_lsp = require("cmp_nvim_lsp")
+			local capabilities = cmp_nvim_lsp.default_capabilities()
+
+			-- Modern native LSP config (Neovim 0.11+)
+			vim.lsp.config("ts_ls", {
+				capabilities = capabilities,
+				filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+				root_dir = vim.fs.root(0, { "tsconfig.json", "package.json", ".git" }),
+				settings = {
+					typescript = {
+						format = { enable = true },
+						suggest = { completeFunctionCalls = true },
+						inlayHints = {
+							includeInlayParameterNameHints = "all",
+							includeInlayVariableTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+						},
+					},
+					javascript = {
+						format = { enable = true },
+					},
+				},
+				on_attach = function(client, bufnr)
+					local opts = { buffer = bufnr, silent = true }
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+				end,
+			})
 		end,
 	},
 	-- DAP UI (optional but recommended)

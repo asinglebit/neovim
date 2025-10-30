@@ -28,6 +28,8 @@ colors.strings = colors.orange;
 colors.functions = colors.orange;
 colors.types = colors.green;
 colors.errors = colors.red;
+colors.brackets = colors.yellow;
+colors.punctuantion = colors.green;
 
 colors.vscViolet = grey_400; --'#FF0000';
 colors.vscDarkBlue = grey_400; --'#FF0000';

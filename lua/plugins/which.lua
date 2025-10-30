@@ -72,12 +72,19 @@ return {
 				{ "<leader>ff", ":Telescope find_files<CR>", desc = "Find File", icon = ""  },
 				{ "<leader>fg", ":Telescope live_grep<CR>", desc = "Live Grep", icon = ""  },
 				{ "<leader>fr", ":Telescope oldfiles<CR>", desc = "Recent Files", icon = ""  },
+				{ "<leader>fp", ":Telescope project<CR>", desc = "Find Projects", icon = "" },
 				
 				-- LazyVim
 				{ "<leader>l", group = "LazyVim", icon = ""  },
 				{ "<leader>li", ":Lazy install<CR>", desc = "Install Plugins", icon = ""  },
 				{ "<leader>ls", ":Lazy sync<CR>", desc = "Sync Plugins", icon = ""  },
 				{ "<leader>lu", ":Lazy update<CR>", desc = "Update Plugins", icon = ""  },
+
+				-- Mason
+				{ "<leader>m", group = "Mason", icon = "" },
+				{ "<leader>mm", ":Mason<CR>", desc = "Open Mason UI", icon = "" },
+				{ "<leader>ml", ":MasonLog<CR>", desc = "Show Mason Log", icon = "" },
+				{ "<leader>mu", ":MasonUpdate<CR>", desc = "Update Mason Registry", icon = "" },
 
 				-- Quit/Session
 				{ "<leader>q", group = "Quit/Session", icon = ""  },
@@ -86,7 +93,8 @@ return {
 
 				-- Telescope
 				{ "<leader>r", ":Telescope oldfiles<CR>", desc = "Telescope > Restore previous", icon = ""  },
-
+				{ "<leader>p", ":Telescope project<CR>", desc = "Telescope > Projects", icon = ""  },
+				
 				-- Neotree
 				{ "<leader>e", "<Cmd>Neotree toggle<CR>", desc = "Neotree > Toggle", icon = "" }
 			}
