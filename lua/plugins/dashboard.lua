@@ -23,7 +23,7 @@ return {
 				handle:close()
 
 				-- map commit counts to unicode symbols (light → heavy)
-				local symbols = { "· ", "• ", "● ", "⬤ ", "⯀ " }
+				local symbols = { "· ", "• ", "● ", "⬤ " }
 				local chart = {}
 
 				for i = days, 1, -1 do
@@ -32,16 +32,14 @@ return {
 					local symbol
 					if count == 0 then
 						symbol = "  "
-					elseif count < 2 then
+					elseif count < 3 then
 						symbol = symbols[1]
 					elseif count < 5 then
 						symbol = symbols[2]
-					elseif count < 10 then
+					elseif count < 12 then
 						symbol = symbols[3]
-					elseif count < 20 then
-						symbol = symbols[4]
 					else
-						symbol = symbols[5]
+						symbol = symbols[4]
 					end
 					table.insert(chart, symbol)
 				end
@@ -161,13 +159,18 @@ return {
 			-- Footer
 			dashboard.section.footer.opts = { hl = "DashboardCommits", position = "center" }
 
-			local max_width = 60
-			local commits = get_recent_commits(5)
+			local max_width = 61
+			local commits = get_recent_commits(15)
 			for i, commit in ipairs(commits) do
 				commits[i] = trim_with_ellipsis(commit, max_width)
 			end
-			dashboard.section.footer.val = commits
 			
+			for _ = 1, 2 do
+		    	table.insert(commits, 1, "")
+			end
+
+
+			dashboard.section.footer.val = commits
 
 			-- Dynamically calculate top padding to center vertically
 			local function get_padding()
@@ -175,7 +178,7 @@ return {
 				local content_height = #dashboard.section.header.val
 					+ #dashboard.section.buttons.val
 					+ #dashboard.section.footer.val
-					+ 8 -- spacing between sections
+					+ 7 -- spacing between sections
 				return math.max(0, math.floor((height - content_height) / 2))
 			end
 
