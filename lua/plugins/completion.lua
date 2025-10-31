@@ -42,7 +42,10 @@ return {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({
 					{ name = "path" }, -- file paths
-					{ name = "cmdline" }, -- commands
+					{ name = "cmdline", option = {
+        -- ignore heavy commands to avoid slow completion
+        ignore_cmds = { "terminal", "TermExec" },
+      }}, -- commands
 				}),
 			})
 
