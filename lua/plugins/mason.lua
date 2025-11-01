@@ -97,7 +97,7 @@ return {
 	-- DAP UI (optional but recommended)
 	{
 		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap", "git@github.com:nvim-neotest/nvim-nio.git" },
+		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
