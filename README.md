@@ -158,7 +158,27 @@ This Neovim configuration uses a **custom-designed color theme** optimized for *
 - **Consistent Icon Colors:** File icons, LSP symbols, and UI highlights follow a coherent color palette to aid quick recognition.
 - ** guita╭ compatible** Designed to be visually compatible with my other project, the **guita╭** git tui client: https://github.com/asinglebit/guitar
 
-### Notes:
+---
+
+## 9. Prerequisites
+
+Before setting up the environment or running the project, ensure you have the following dependencies installed on your system:
+
+1. **ripgrep** (used by Telescope for text searching):
+
+   `ripgrep` is an ultra-fast text search tool that Telescope uses for its `live_grep` functionality. You can install it using the following command:
+
+   ```bash
+   sudo apt install ripgrep
+   ```
+
+1. **compilers** (used by Telescope for text searching):
+
+   The build-essential package contains a list of packages that are required for compiling and building software on Ubuntu or Debian-based systems.
+
+   ```bash
+   sudo apt install build-essential
+   ```
 
 - Make sure to install ts_ls via Mason, otherwise, remove the typescript lang support
 - Make sure to install codelldb via Mason, otherwise, remove the rust support
