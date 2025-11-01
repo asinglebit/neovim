@@ -160,9 +160,7 @@ This Neovim configuration uses a **custom-designed color theme** optimized for *
 
 ### Notes:
 
-- Many plugins have overlapping dependencies (e.g., `plenary.nvim`, `nvim-web-devicons`) which are shared among multiple tools.  
-- Completion and LSP support is handled primarily by `nvim-cmp` + its sources.  
-- Telescope + its extensions are the main navigation and project management framework.  
-- Snippets are handled by LuaSnip and integrated into the completion engine.  
+- Make sure to install ts_ls via Mason, otherwise, remove the typescript lang support
+- Make sure to install codelldb via Mason, otherwise, remove the rust support
 
 ---
