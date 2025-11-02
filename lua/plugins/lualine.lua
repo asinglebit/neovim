@@ -11,7 +11,7 @@ return {
 				-- disabled_filetypes = { statusline = { "alpha", "dashboard" } },
 				theme = {
 					normal = {
-						a = { fg = colors.grey_900, bg = colors.green, gui = 'bold' },
+						a = { fg = colors.grey_300, bg = colors.grey_700, gui = 'bold' },
 						b = { fg = colors.grey_400, bg = colors.grey_800 },
 						c = { fg = colors.grey_500, bg = colors.grey_900 },
 						x = { fg = colors.grey_500, bg = colors.grey_900 },
@@ -19,7 +19,7 @@ return {
 						z = { fg = colors.grey_300, bg = colors.grey_700 },
 					},
 					visual = {
-						a = { fg = colors.grey_900, bg = colors.yellow, gui = 'bold' },
+						a = { fg = colors.grey_300, bg = colors.grey_700, gui = 'bold' },
 						b = { fg = colors.grey_400, bg = colors.grey_800 },
 						c = { fg = colors.grey_500, bg = colors.grey_900 },
 						x = { fg = colors.grey_500, bg = colors.grey_900 },
@@ -27,7 +27,7 @@ return {
 						z = { fg = colors.grey_300, bg = colors.grey_700 },
 					},
 					insert = {
-						a = { fg = colors.grey_900, bg = colors.blue, gui = 'bold' },
+						a = { fg = colors.grey_300, bg = colors.grey_700, gui = 'bold' },
 						b = { fg = colors.grey_400, bg = colors.grey_800 },
 						c = { fg = colors.grey_500, bg = colors.grey_900 },
 						x = { fg = colors.grey_500, bg = colors.grey_900 },
@@ -35,7 +35,7 @@ return {
 						z = { fg = colors.grey_300, bg = colors.grey_700 },
 					},
 					command = {
-						a = { fg = colors.grey_900, bg = colors.teal, gui = 'bold' },
+						a = { fg = colors.grey_300, bg = colors.grey_700, gui = 'bold' },
 						b = { fg = colors.grey_400, bg = colors.grey_800 },
 						c = { fg = colors.grey_500, bg = colors.grey_900 },
 						x = { fg = colors.grey_500, bg = colors.grey_900 },
@@ -43,7 +43,7 @@ return {
 						z = { fg = colors.grey_300, bg = colors.grey_700 },
 					},
 					terminal = {
-						a = { fg = colors.grey_900, bg = colors.purple, gui = 'bold' },
+						a = { fg = colors.grey_300, bg = colors.grey_700, gui = 'bold' },
 						b = { fg = colors.grey_400, bg = colors.grey_800 },
 						c = { fg = colors.grey_500, bg = colors.grey_900 },
 						x = { fg = colors.grey_500, bg = colors.grey_900 },
@@ -51,7 +51,7 @@ return {
 						z = { fg = colors.grey_300, bg = colors.grey_700 },
 					},
 					replace = {
-						a = { fg = colors.grey_900, bg = colors.red, gui = 'bold' },
+						a = { fg = colors.grey_300, bg = colors.grey_700, gui = 'bold' },
 						b = { fg = colors.grey_400, bg = colors.grey_800 },
 						c = { fg = colors.grey_500, bg = colors.grey_900 },
 						x = { fg = colors.grey_500, bg = colors.grey_900 },
@@ -79,13 +79,7 @@ return {
 				},
 				lualine_y = { "progress", }, -- file percentage
 				lualine_z = {
-					"location",
-					{
-						"os.date('%H:%M')",
-						fmt = function(str)
-							return str
-						end,
-					},
+					"location"
 				}, -- time
 			},
 		}

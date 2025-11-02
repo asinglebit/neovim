@@ -10,7 +10,6 @@ return {
 			-- Contribution chart
 
 			local function get_contribution_chart(days)
-				days = days or 200
 				local handle = io.popen(
 					'git log --since="' .. days .. ' days ago" --date=short --pretty=format:"%ad" 2>/dev/null'
 				)
@@ -22,36 +21,42 @@ return {
 				end
 				handle:close()
 
-				-- map commit counts to unicode symbols (light → heavy)
-				local symbols = { "· ", "• ", "● ", "⬤ " }
-				local chart = {}
+				-- Characters to represent 0 → 35 commits
+				local chars = { "·" }  -- replace 0 with dot
+				for i = 1, 9 do table.insert(chars, tostring(i)) end
+				for c = string.byte("a"), string.byte("z") do table.insert(chars, string.char(c)) end
 
+				-- Find max commits in range for scaling
+				local max_count = 0
+				for _, count in pairs(commits) do
+					if count > max_count then max_count = count end
+				end
+				max_count = math.max(max_count, #chars) -- scale to char range
+
+				local chart = {}
 				for i = days, 1, -1 do
 					local date = os.date("%Y-%m-%d", os.time() - (i * 86400))
 					local count = commits[date] or 0
-					local symbol
-					if count == 0 then
-						symbol = "  "
-					elseif count < 3 then
-						symbol = symbols[1]
-					elseif count < 5 then
-						symbol = symbols[2]
-					elseif count < 12 then
-						symbol = symbols[3]
-					else
-						symbol = symbols[4]
-					end
-					table.insert(chart, symbol)
+
+					-- Scale count to index in chars table
+					local idx = math.min(math.floor(count / max_count * (#chars - 1)) + 1, #chars)
+					table.insert(chart, chars[idx])
 				end
 
-				-- Render horizontally, grouping 7-day columns
+				-- Move first entry to the end
+				if #chart > 0 then
+					table.insert(chart, chart[1])
+					table.remove(chart, 1)
+				end
+
+				-- Render horizontally, grouping 7-day columns (Monday top)
 				local rows = { "", "", "", "", "", "", "" }
 				for i = 1, #chart do
-					local row = (i - 1) % 7 + 1
+					local row = ((i - 1 + 1) % 7) + 1 -- Monday top
 					rows[row] = rows[row] .. chart[i]
 				end
 
-				-- Trim leading and trailing spaces
+				-- Trim spaces
 				for i, row in ipairs(rows) do
 					rows[i] = row:match("^%s*(.-)%s*$") or ""
 				end
@@ -119,7 +124,7 @@ return {
 
 			-- Set dashboard header
 			if is_git_repo() then
-				dashboard.section.header.val = get_contribution_chart(360)
+				dashboard.section.header.val = get_contribution_chart(427)
 			else
 				dashboard.section.header.val = {
 					"             .::::..            ",
@@ -139,6 +144,9 @@ return {
 					"     :?5GBBBGGGGGGGGBBBG5?:     ",
 					"        :!?Y5PPPPPP5Y?!:        ",
 					"             ......             ",
+					"                                ",
+					"                                ",
+					"                                ",
 				}
 			end
 
@@ -164,11 +172,6 @@ return {
 			for i, commit in ipairs(commits) do
 				commits[i] = trim_with_ellipsis(commit, max_width)
 			end
-			
-			for _ = 1, 2 do
-		    	table.insert(commits, 1, "")
-			end
-
 
 			dashboard.section.footer.val = commits
 
@@ -178,14 +181,13 @@ return {
 				local content_height = #dashboard.section.header.val
 					+ #dashboard.section.buttons.val
 					+ #dashboard.section.footer.val
-					+ 7 -- spacing between sections
 				return math.max(0, math.floor((height - content_height) / 2))
 			end
 
 			dashboard.config.layout = {
 				{ type = "padding", val = get_padding() },
 				dashboard.section.header,
-				{ type = "padding", val = 5 },
+				{ type = "padding", val = 1 },
 				dashboard.section.buttons,
 				{ type = "padding", val = 1 },
 				dashboard.section.footer,

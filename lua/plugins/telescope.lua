@@ -16,6 +16,7 @@ return {
             telescope.setup({
                 defaults = {
                     file_ignore_patterns = { "node_modules", ".git/" },
+                    color_devicons = false,
                     mappings = {
                         i = {
                             ["<C-j>"] = actions.move_selection_next,

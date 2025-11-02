@@ -1,12 +1,3 @@
-local function restore_previous_file()
-  local oldfiles = vim.v.oldfiles
-  if #oldfiles > 0 then
-    vim.cmd("edit " .. oldfiles[1])
-  else
-    print("No previous file found")
-  end
-end
-
 return {
 
 	-- Dressing.nvim (optional, improves UI)

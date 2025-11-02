@@ -1,10 +1,12 @@
+local colors = require('theme.colors')
+
 return {
 	"nvim-neo-tree/neo-tree.nvim",
 	branch = "v3.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
-		-- "nvim-tree/nvim-web-devicons", -- optional, but recommended for file icons :contentReference[oaicite:1]{index=1}
+		"nvim-tree/nvim-web-devicons", -- optional, but recommended for file icons :contentReference[oaicite:1]{index=1}
 	},
 	keys = {
 		{ "<leader>e", "<Cmd>Neotree toggle<CR>", desc = "Neotree > Toggle" },
@@ -46,10 +48,9 @@ return {
 					if node.type == "file" or node.type == "terminal" then
 						local success, web_devicons = pcall(require, "nvim-web-devicons")
 						local name = node.type == "terminal" and "terminal" or node.name
-						if false then
+						if success then
 							local devicon, hl = web_devicons.get_icon(name)
 							icon.text = devicon or icon.text
-							icon.highlight = hl or icon.highlight
 						end
 					end
 				end,
