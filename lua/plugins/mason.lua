@@ -27,7 +27,7 @@ return {
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "rust_analyzer", "ts_ls" },
+				ensure_installed = { "rust_analyzer", "ts_ls", "angularls" },
 				automatic_installation = true,
 			})
 		end,
@@ -65,8 +65,11 @@ return {
 			local cmp_nvim_lsp = require("cmp_nvim_lsp")
 			local capabilities = cmp_nvim_lsp.default_capabilities()
 
-			-- Modern native LSP config (Neovim 0.11+)
+			-- TypeScript: LSP via tsserver
+
 			vim.lsp.config("ts_ls", {
+				name = "tsserver",
+    			cmd = { vim.fn.stdpath("data") .. "/mason/bin/typescript-language-server", "--stdio" },
 				capabilities = capabilities,
 				filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
 				root_dir = vim.fs.root(0, { "tsconfig.json", "package.json", ".git" }),
@@ -92,6 +95,71 @@ return {
 					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 				end,
 			})
+			vim.lsp.enable("ts_ls")
+
+			-- Angular: LSP via angularls
+
+			local function get_probe_dir(root_dir)
+				local project_root = vim.fs.dirname(vim.fs.find("node_modules", { path = root_dir, upward = true })[1])
+				return project_root and (project_root .. "/node_modules") or ""
+			end
+		
+			local function get_angular_core_version(root_dir)
+				local project_root = vim.fs.dirname(vim.fs.find("node_modules", { path = root_dir, upward = true })[1])
+				if not project_root then
+					return ""
+				end
+				local package_json = project_root .. "/package.json"
+				if not vim.loop.fs_stat(package_json) then
+					return ""
+				end
+				local contents = io.open(package_json):read("*a")
+				local json = vim.json.decode(contents)
+				if not json.dependencies then
+					return ""
+				end
+				local angular_core_version = json.dependencies["@angular/core"]
+				angular_core_version = angular_core_version and angular_core_version:match("%d+%.%d+%.%d+")
+				return angular_core_version
+			end
+		
+			local project_root = vim.fs.root(0, { "angular.json", "nx.json", "package.json", ".git" }) or vim.fn.getcwd()
+			local default_probe_dir = get_probe_dir(project_root)
+			local default_angular_core_version = get_angular_core_version(project_root)
+			local ngserver = vim.fn.stdpath("data") .. "/mason/bin/ngserver"
+		
+			vim.lsp.config("angularls", {
+				cmd = {
+					ngserver,
+					"--stdio",
+					"--tsProbeLocations",
+					default_probe_dir,
+					"--ngProbeLocations",
+					default_probe_dir,
+					"--angularCoreVersion",
+					default_angular_core_version,
+				},
+				filetypes = {
+					"html",
+					"htmlangular",
+					"javascript",
+					"javascriptreact",
+					"javascript.jsx",
+					"typescript",
+					"typescriptreact",
+					"typescript.tsx",
+				},
+				capabilities = capabilities,
+				root_dir = vim.fs.root(0, { "angular.json", "package.json", ".git" }),
+				on_attach = function(client, bufnr)
+					local opts = { buffer = bufnr, silent = true }
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+				end,
+			})
+			vim.lsp.enable("angularls")
 		end,
 	},
 	-- DAP UI (optional but recommended)
