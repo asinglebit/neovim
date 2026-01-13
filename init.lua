@@ -1,19 +1,14 @@
-vim.opt.syntax = "on"
-vim.opt.number = true
-vim.opt.mouse = "a"
-vim.opt.tabstop = 4
+vim.cmd("syntax on")
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.mouse = "a"
+vim.opt.tabstop = 4
 vim.opt.fillchars:append({ eob = " " })
 vim.o.cursorline = true
 
 vim.keymap.set("n", "<leader>fp", "<cmd>Telescope project<cr>", { desc = "Projects" })
 
 require("config.lazy")
-
-local vscode = require("theme")
-vscode.setup()
-vscode.load()
 
 -- Buffer navigation
 vim.keymap.set("n", "H", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
