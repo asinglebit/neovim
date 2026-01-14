@@ -1,7 +1,7 @@
 return {
   "Isrothy/neominimap.nvim",
   version = "v3.x.x",
-  lazy = false,  -- don't lazy-load; load always
+  lazy = false,
   keys = {
     { "<leader>nm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle global minimap" },
     { "<leader>no", "<cmd>Neominimap Enable<cr>", desc = "Enable global minimap" },
@@ -29,7 +29,7 @@ return {
     vim.opt.sidescrolloff = 36
     
     vim.g.neominimap = {
-      auto_enable = true,
+      auto_enable = false,
     }
   end,
 }

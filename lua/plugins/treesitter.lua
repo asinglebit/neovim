@@ -1,16 +1,14 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
-	opts = {
-		ensure_installed = { "rust", "lua", "toml", "json" }, -- add other languages you use
-		highlight = {
-			enable = true,
-			additional_vim_regex_highlighting = false,
-		},
-		indent = { enable = true },
-	},
-	config = function(_, opts)
-		require("nvim-treesitter.configs").setup(opts)
-		require("nvim-treesitter.install").ensure_installed("rust")
-	end,
+  "nvim-treesitter/nvim-treesitter",
+  lazy = false,        -- force load on startup
+		branch = 'master',
+  build = ":TSUpdate",
+  opts = {
+    ensure_installed = { "rust", "lua", "toml", "json" },
+    highlight = { enable = true },
+    indent = { enable = true },
+  },
+  config = function(_, opts)
+    require("nvim-treesitter.configs").setup(opts)
+  end,
 }

@@ -41,6 +41,7 @@ return {
                     project = {
 						base_dirs = {
 							{path = '~/projects', max_depth = 2},
+							{path = '~/.config', max_depth = 2},
 						},
 						ignore_missing_dirs = true, -- default: false
 						hidden_files = true, -- default: false
@@ -56,9 +57,9 @@ return {
 						end,
 						mappings = {
 							n = {
-							['<leader>fd'] = project_actions.delete_project,
+							['<leader>td'] = project_actions.delete_project,
 							-- ['r'] = project_actions.rename_project,
-							["<leader>fa"] = project_actions.add_project,
+							["<leader>ta"] = project_actions.add_project,
 							-- ['C'] = project_actions.add_project_cwd,
 							-- ['f'] = project_actions.find_project_files,
 							-- ['b'] = project_actions.browse_project_files,

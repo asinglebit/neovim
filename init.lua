@@ -32,3 +32,16 @@ vim.keymap.set("n", "<leader>p", '"+p', opts)
 vim.keymap.set("n", "<leader>P", '"+P', opts)
 vim.keymap.set("v", "<leader>p", '"+p', opts)
 vim.keymap.set("v", "<leader>P", '"+P', opts)
+
+vim.keymap.set("n", "<leader>j", function()
+  vim.diagnostic.open_float(nil, { focus = true, border = "rounded" })
+end, { silent = true })
+local wk = require("which-key")
+wk.add({
+    mode = { "v" },  -- Only active in visual mode
+    { "<leader>s",  group = "Silicon" },  -- Group heading in Which-Key
+    { "<leader>sc", function() require("nvim-silicon").clip() end, desc = "Copy code screenshot to clipboard" },
+    { "<leader>sf", function() require("nvim-silicon").file() end,  desc = "Save code screenshot as file" },
+    { "<leader>ss", function() require("nvim-silicon").shoot() end,  desc = "Create code screenshot" },
+})
+

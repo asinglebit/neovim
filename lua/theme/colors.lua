@@ -1,7 +1,5 @@
 local colors = {}
-
 colors.___missing = '#FF0000'; 
-
 colors.grey_900 = "#1E1E1E";
 colors.grey_875 = "#242424";
 colors.grey_850 = "#282828";
@@ -13,7 +11,6 @@ colors.grey_400 = "#858585";
 colors.grey_300 = "#A5A5A5";
 colors.grey_200 = "#C9C9C9";
 colors.grey_100 = "#DCDCDC";
-
 -- colors.grey_900 = "#1E1E1E";
 -- colors.grey_875 = "#242424";
 -- colors.grey_850 = "#282828";
@@ -25,7 +22,6 @@ colors.grey_100 = "#DCDCDC";
 -- colors.grey_300 = "#A5C1AD";
 -- colors.grey_200 = "#C9E6D3";
 -- colors.grey_100 = "#DCF0E3";
-
 colors.vscNone = 'NONE';
 colors.white = '#D1D1D1';
 colors.vscViolet = '#646695'
@@ -47,7 +43,6 @@ colors.vscDarkYellow = '#FFD602'
 colors.vscPink = '#C586C0'
 colors.vscGray = '#808080'
 colors.vscDimHighlight = '#51504F'
-
 colors.selection = colors.grey_700;
 colors.vscBack = colors.grey_900;
 colors.vscTabCurrent = colors.grey_900;
@@ -73,7 +68,6 @@ colors.vscContext = colors.grey_700;
 colors.vscContextCurrent = colors.grey_500;
 colors.vscFoldBackground = colors.grey_875;
 colors.vscSuggestion = colors.grey_500;
-
 colors.vscDiffRedDark = '#4B1818';
 colors.vscDiffRedLight = '#6F1313';
 colors.vscDiffRedLightLight = '#FB0101';
@@ -88,4 +82,4 @@ colors.vscGitStageModified = '#e2c08d';
 colors.vscGitStageDeleted = '#c74e39';
 colors.vscGitConflicting = '#5C9777';
 
-return colors
+return colors;

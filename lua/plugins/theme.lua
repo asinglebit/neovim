@@ -13,7 +13,6 @@ return {
             -- apply your custom highlights directly after loading
             local theme = require('theme.highlights')
             theme.set_highlights()
-            theme.link_highlight()
         end
     }
 }

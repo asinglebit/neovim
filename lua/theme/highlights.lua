@@ -1,19 +1,18 @@
 local hl = vim.api.nvim_set_hl
 local theme = {}
 
-
 theme.set_highlights = function()
+
     local colors = require('theme.colors')
 
-    -- hl(0, 'DashboardChart', { fg = colors.vscGreen , })
-    -- hl(0, 'DashboardCommits', { fg = colors.vscGreen, })
-
+    hl(0, 'DashboardChart', { fg = colors.vscDimHighlight , })
+    hl(0, 'DashboardCommits', { fg = colors.vscDimHighlight, })
 
     hl(0, 'Normal', { fg = colors.white, bg = colors.vscBack })
     hl(0, 'ColorColumn', { fg = 'NONE', bg = colors.vscCursorDarkDark })
     hl(0, 'Cursor', { fg = colors.vscCursorDark, bg = colors.vscCursorLight })
     hl(0, 'CursorLine', { bg = colors.vscCursorDarkDark })
-    hl(0, 'CursorColumn', { fg = 'NONE', bg = colors.vscCursorDarkDark })
+
     -- hl(0, 'Directory', { fg = colors.vscBlue, bg = colors.vscBack })
     -- hl(0, 'DiffAdd', { fg = 'NONE', bg = colors.vscDiffGreenLight })
     -- hl(0, 'DiffChange', { fg = 'NONE', bg = colors.vscDiffRedDark })
@@ -892,9 +891,7 @@ theme.set_highlights = function()
     -- symbols-outline
     hl(0, 'FocusedSymbol', { fg = colors.grey_400, bg = colors.grey_900 })
     hl(0, 'SymbolsOutlineConnector', { fg = colors.grey_400, bg = colors.grey_900 })
-end
 
-theme.link_highlight = function()
     -- Legacy groups for official git.vim and diff.vim syntax
     hl(0, 'diffAdded', { link = 'DiffAdd' })
     hl(0, 'diffChanged', { link = 'DiffChange' })
@@ -946,6 +943,7 @@ theme.link_highlight = function()
     hl(0, 'CmpItemKindConstant', { link = '@constant' })
     hl(0, 'CmpItemKindStruct', { link = '@structure' })
     hl(0, 'CmpItemKindTypeParameter', { link = '@variable.parameter' })
+
 end
 
 return theme
