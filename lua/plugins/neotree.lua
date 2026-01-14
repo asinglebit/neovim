@@ -74,10 +74,10 @@ return {
 					modified = "~",
 					deleted = "-",
 					renamed = "/",
-					untracked = "?",
-					ignored = ".",
-					unstaged = "󰄱",
-					staged = "",
+					untracked = "◌",
+					ignored = "•",
+					unstaged = "○",
+					staged = "●",
 					conflict = "!",
 				},
 			},
@@ -336,8 +336,8 @@ return {
 		sources = { "filesystem", "buffers", "git_status" },
 
   source_selector = {
-    winbar = true,        -- show tabs in the window bar
-    statusline = false,   -- alternatively, could show in statusline
+    winbar = false,        -- show tabs in the window bar
+    statusline = true,   -- alternatively, could show in statusline
     show_scrolled_off_parent_node = false,
     sources = {
       { source = "filesystem", display_name = " Files" },
