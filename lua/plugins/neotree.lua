@@ -13,7 +13,7 @@ return {
 	},
 	lazy = false,
 	opts = {
-		close_if_last_window = false,
+		close_if_last_window = true,
 		popup_border_style = "NC",
 		clipboard = {
 			sync = "none",
@@ -59,7 +59,7 @@ return {
 				use_filtered_colors = true,
 			},
 			modified = {
-				symbol = "~",
+				symbol = "*",
 				highlight = "NeoTreeModified",
 			},
 			name = {
@@ -73,7 +73,7 @@ return {
 					added = "+",
 					modified = "~",
 					deleted = "-",
-					renamed = "/",
+					renamed = "r",
 					untracked = "◌",
 					ignored = "•",
 					unstaged = "○",
