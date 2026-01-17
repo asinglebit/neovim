@@ -2,7 +2,7 @@ return {
 	"michaelrommel/nvim-silicon",
 	lazy = true,
 	cmd = "Silicon",
-    opts = {
-				to_clipboard = true,
-    }
+	opts = {
+		to_clipboard = true,
+	},
 }

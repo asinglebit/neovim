@@ -1,4 +1,4 @@
-local colors = require('theme.colors')
+local colors = require("theme.colors")
 
 return {
 	"nvim-neo-tree/neo-tree.nvim",
@@ -108,7 +108,7 @@ return {
 		commands = {},
 		window = {
 			position = "left",
-			width = 40,
+			width = 30,
 			mapping_options = {
 				noremap = true,
 				nowait = true,
@@ -118,8 +118,8 @@ return {
 					"toggle_node",
 					nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
 				},
-				["h"] = "close_node",   -- collapse folder / go to parent
-      			["l"] = "open", 
+				["h"] = "close_node", -- collapse folder / go to parent
+				["l"] = "open",
 				["<2-LeftMouse>"] = "open",
 				["<cr>"] = "open",
 				["<esc>"] = "cancel", -- close preview or floating neo-tree window
@@ -335,16 +335,16 @@ return {
 		},
 		sources = { "filesystem", "buffers", "git_status" },
 
-  source_selector = {
-    winbar = false,        -- show tabs in the window bar
-    statusline = true,   -- alternatively, could show in statusline
-    show_scrolled_off_parent_node = false,
-    sources = {
-      { source = "filesystem", display_name = " Files" },
-      { source = "buffers",    display_name = " Buffers" },
-      { source = "git_status", display_name = " Git" },
-    },
-  },
+		source_selector = {
+			winbar = false, -- show tabs in the window bar
+			statusline = true, -- alternatively, could show in statusline
+			show_scrolled_off_parent_node = false,
+			sources = {
+				{ source = "filesystem", display_name = " Files" },
+				{ source = "buffers", display_name = " Buffers" },
+				{ source = "git_status", display_name = " Git" },
+			},
+		},
 	},
 	config = function(_, opts)
 		require("neo-tree").setup(opts)
