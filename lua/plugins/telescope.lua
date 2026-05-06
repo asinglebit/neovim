@@ -40,7 +40,7 @@ return {
 					},
 					project = {
 						base_dirs = {
-							{ path = "~/projects", max_depth = 2 },
+							{ path = "~/projects", max_depth = 3 },
 							{ path = "~/.config", max_depth = 2 },
 						},
 						ignore_missing_dirs = true, -- default: false
@@ -59,9 +59,9 @@ return {
 								["<leader>td"] = project_actions.delete_project,
 								-- ['r'] = project_actions.rename_project,
 								["<leader>ta"] = project_actions.add_project,
-								-- ['C'] = project_actions.add_project_cwd,
-								-- ['f'] = project_actions.find_project_files,
-								-- ['b'] = project_actions.browse_project_files,
+								["<leader>td"] = project_actions.add_project_cwd,
+								["<leader>tf"] = project_actions.find_project_files,
+								["<leader>tb"] = project_actions.browse_project_files,
 								-- ['s'] = project_actions.search_in_project_files,
 								-- ['R'] = project_actions.recent_project_files,
 								-- ['w'] = project_actions.change_working_directory,
