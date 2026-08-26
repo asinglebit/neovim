@@ -4,7 +4,7 @@ return {
 	branch = "master",
 	build = ":TSUpdate",
 	opts = {
-		ensure_installed = { "rust", "lua", "toml", "json" },
+		ensure_installed = { "rust", "lua", "toml", "json", "markdown", "markdown_inline", "yaml" },
 		highlight = { enable = true },
 		indent = { enable = true },
 	},

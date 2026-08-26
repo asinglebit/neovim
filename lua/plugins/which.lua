@@ -93,6 +93,9 @@ return {
 
 				-- Neotree
 				{ "<leader>e", "<Cmd>Neotree toggle<CR>", desc = "Neotree > Toggle", icon = "" },
+
+				-- Obsidian
+				{ "<leader>o", group = "Obsidian", icon = "" },
 			},
 		},
 		keys = {
