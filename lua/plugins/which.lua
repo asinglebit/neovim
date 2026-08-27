@@ -96,6 +96,10 @@ return {
 
 				-- Obsidian
 				{ "<leader>o", group = "Obsidian", icon = "" },
+
+				-- UI
+				{ "<leader>u", group = "UI", icon = "" },
+				{ "<leader>uc", desc = "Themes", icon = "" },
 			},
 		},
 		keys = {

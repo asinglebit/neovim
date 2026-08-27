@@ -158,6 +158,21 @@ This Neovim configuration uses a **custom-designed color theme** optimized for *
 - **Consistent Icon Colors:** File icons, LSP symbols, and UI highlights follow a coherent color palette to aid quick recognition.
 - ** guita╭ compatible** Designed to be visually compatible with my other project, the **guita╭** git tui client: https://github.com/asinglebit/guitar
 
+### Switching themes
+
+`<leader>uc` opens a live picker: the colourscheme applies as you move through the list, `<Esc>`
+puts back what you had, `<CR>` keeps it and remembers it across restarts.
+
+Ten popular themes are wired up alongside the custom one — Catppuccin, Tokyo Night, Rose Pine,
+Gruvbox, Kanagawa, Nightfox, Nord, Everforest, Dracula and Oxocarbon — 31 variants in all,
+including the light ones. They are declared lazily, so none of them cost anything at startup.
+
+The custom chrome above is not abandoned when you switch. `lua/theme/palette.lua` rebuilds the
+grey ramp from whichever theme is active: each step keeps the exact lightness offset it has in
+the hand-authored palette, and takes its hue from that theme's own background. So the sidebar,
+telescope, which-key and lualine keep their flat, low-contrast shape while the syntax colours
+come from the theme. The custom theme itself is exempt and uses `lua/theme/colors.lua` verbatim.
+
 ### Notes:
 
 - Many plugins have overlapping dependencies (e.g., `plenary.nvim`, `nvim-web-devicons`) which are shared among multiple tools.  

@@ -21,8 +21,6 @@ return {
 			{ "<leader>ok", ":Obsidian link<cr>", mode = "v", desc = "Link selection" },
 		},
 		opts = function()
-			local colors = require("theme.colors")
-
 			return {
 				legacy_commands = false,
 				workspaces = {
