@@ -32,4 +32,6 @@ require("lazy").setup({
 	-- colorscheme that will be used when installing plugins.
 	-- automatically check for plugin updates
 	checker = { enabled = true },
+	-- no plugin here needs a real rock: every rockspec asks only for `lua >= 5.1`, which nvim's LuaJIT satisfies
+	rocks = { enabled = false },
 })
