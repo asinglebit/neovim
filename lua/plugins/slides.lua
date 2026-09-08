@@ -80,7 +80,9 @@ return {
 				vim.wo.relativenumber = false
 				vim.bo.buflisted = false
 
-				local job_id = vim.fn.termopen({ binary, file }, {
+				-- termopen() is deprecated since 0.11
+				local job_id = vim.fn.jobstart({ binary, file }, {
+					term = true,
 					cwd = vim.fn.fnamemodify(file, ":h"),
 				})
 

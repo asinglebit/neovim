@@ -1,11 +1,5 @@
 return {
 
-	-- Dressing.nvim (optional, improves UI)
-	{
-		"stevearc/dressing.nvim",
-		lazy = true,
-	},
-
 	-- Web Devicons (optional, adds icons support)
 	{
 		"nvim-tree/nvim-web-devicons",
@@ -112,8 +106,4 @@ return {
 			},
 		},
 	},
-	config = function(_, opts)
-		local wk = require("which-key")
-		wk.setup(opts) -- set up WhichKey with your opts
-	end,
 }

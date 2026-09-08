@@ -56,7 +56,7 @@ return {
 						end,
 						mappings = {
 							n = {
-								["<leader>td"] = project_actions.delete_project,
+								["<leader>tD"] = project_actions.delete_project,
 								-- ['r'] = project_actions.rename_project,
 								["<leader>ta"] = project_actions.add_project,
 								["<leader>td"] = project_actions.add_project_cwd,

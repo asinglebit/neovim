@@ -2,8 +2,7 @@ return {
 	-- Core completion engine
 	{
 		"hrsh7th/nvim-cmp",
-		lazy = false,
-		event = "InsertEnter",
+		lazy = false, -- an `event` would be inert alongside this
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp", -- LSP source
 			"hrsh7th/cmp-buffer", -- buffer source

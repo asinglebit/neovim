@@ -77,8 +77,9 @@ vim.keymap.set("v", "<leader>P", '"+P', vim.tbl_extend("force", opts, {
 -- ==============================
 -- Diagnostics
 -- ==============================
+-- focus = true is what makes `gf` work on DiagnosticRelatedInformation inside the float
 vim.keymap.set("n", "<leader>j", function()
-  vim.diagnostic.open_float(nil, { focus = true, border = "rounded" })
+  vim.diagnostic.open_float({ focus = true })
 end, {
   desc = "Show diagnostic under cursor",
   silent = true,

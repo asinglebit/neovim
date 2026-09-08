@@ -1,7 +1,7 @@
 return {
 	{
 		"stevearc/conform.nvim",
-		dependencies = { "williamboman/mason.nvim" },
+		dependencies = { "mason-org/mason.nvim" },
 		config = function()
 			local conform = require("conform")
 

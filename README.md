@@ -28,14 +28,15 @@ Built around Rust, Go, TypeScript and Lua, with a second life as a Markdown/Obsi
 
 | | |
 |---|---|
-| **Neovim** | 0.11 or newer — the LSP setup uses `vim.lsp.config()` / `vim.lsp.enable()`. Developed on 0.12. |
-| **git**, **make** | lazy.nvim bootstrap; `make` builds `telescope-fzf-native` (skipped if absent) |
+| **Neovim** | **0.12 or newer.** Required, not merely preferred: nvim-treesitter's `main` branch and `vim.lsp.config()`/`vim.lsp.enable()` both need it. |
+| **git**, **make**, a **C compiler** | lazy.nvim bootstrap; `make` builds `telescope-fzf-native`; the compiler builds treesitter parsers |
 | **A Nerd Font** | icons in neo-tree, lualine, the dashboard and diagnostics |
-| **Language toolchains** | `cargo` for Rust, `go` for Go/`gopls`/`slides`, `node` for the TypeScript server |
-| **Optional** | [`silicon`](https://github.com/Aloxaf/silicon) for code screenshots, `go` for [`slides`](https://github.com/maaslalani/slides) |
+| **Language toolchains** | `cargo` for Rust, `go` for Go, `node` for the TypeScript server |
+| **Optional** | [`silicon`](https://github.com/Aloxaf/silicon) for code screenshots; `go` on `$PATH` to build [`slides`](https://github.com/maaslalani/slides) |
 
-Language servers, debug adapters and formatters are installed by Mason on first launch — nothing
-to set up by hand.
+Language servers, debug adapters, formatters and the `tree-sitter` CLI are installed by Mason on
+first launch — nothing to set up by hand. Mason prepends its `bin/` to `$PATH`, which is how
+nvim-treesitter finds the CLI it compiles parsers with.
 
 ## Install
 
@@ -52,11 +53,12 @@ toolchain. `checker.enabled = true`, so lazy checks for plugin updates in the ba
 ## Layout
 
 ```
-init.lua                  options → lazy → theme → diagnostics → keymaps
+init.lua                  options → lazy → theme → diagnostics → lsp → keymaps
 lua/config/
   lazy.lua                leader keys, lazy.nvim bootstrap and setup
   options.lua             editor defaults, tab policy, markdown/Obsidian buffer tweaks
   diagnostics.lua         diagnostic signs and float behaviour
+  lsp.lua                 every language server except Rust, declared by hand
   keymaps.lua             global keymaps
 lua/plugins/*.lua         one file per area, imported wholesale by lazy
 lua/theme/
@@ -65,7 +67,6 @@ lua/theme/
   highlights.lua          ~350 highlight groups across every plugin used here
   lualine.lua             statusline theme derived from the palette
   init.lua                colourscheme registry, live picker, persistence
-queries/markdown/         treesitter injection override
 ```
 
 ---
@@ -149,11 +150,12 @@ a switch is instant and complete.
   Obsidian and UI. `<leader>?` shows buffer-local keymaps only.
 - **neominimap** (v3) — a code minimap, **off by default**, with the full toggle/enable/refresh
   matrix bound under `<leader>n` for global, window, tab and buffer scope, plus focus control.
-- **nvim-colorizer** — highlights colours in place across all filetypes, including CSS
-  `rgb()`/`hsl()` functions, colour names and Tailwind classes.
+- **nvim-colorizer** (catgoose's maintained fork) — highlights colours in place across all
+  filetypes, including CSS `rgb()`/`hsl()` functions, colour names and Tailwind classes.
 - **neoscroll** — cubic-eased smooth scrolling with the cursor hidden mid-flight. Half-page
   (`<C-u>`/`<C-d>`) runs in 100ms; full-page (`<C-b>`/`<C-f>`, `<PageUp>`/`<PageDown>`) in 450ms.
-- **dressing.nvim** and **mini.icons** are declared as optional UI helpers for the plugins above.
+- **dressing.nvim** is gone (archived upstream, and it never actually loaded); **mini.icons** is
+  still declared as an optional icon source for the plugins above.
 
 ### Files and navigation
 
@@ -188,20 +190,28 @@ the cwd.
 
 ### LSP, completion and formatting
 
-Mason keeps the toolchain current: `rust_analyzer`, `ts_ls`, `gopls`, `lua_ls`, `biome` as
-servers, and `stylua`, `rustfmt`, `biome` as tools (auto-updating, installed on start).
+Every server except Rust is declared by hand in `lua/config/lsp.lua` — there is no
+`nvim-lspconfig`. Mason installs the binaries: `rust_analyzer`, `ts_ls`, `gopls`, `lua_ls` and
+`biome` as servers, plus `stylua`, `rustfmt`, `biome` and `tree-sitter-cli` as tools.
+`mason-lspconfig` is used for `ensure_installed` only — its `automatic_enable` is off, so it never
+enables a server this config has not configured.
 
 | Language | Server | Notable settings |
 |---|---|---|
 | Rust | **rustaceanvim** (rust-analyzer) | all cargo features, check on save, inlay hints |
 | TypeScript / JavaScript | `ts_ls` | function-call completion, parameter/variable/return inlay hints, root from `tsconfig.json` / `package.json` / `.git` |
 | Go | `gopls` | `gofumpt`, `staticcheck`, `unusedparams` and `shadow` analyses, root from `go.work` / `go.mod` / `.git` |
-| Lua | `lua_ls` | LuaJIT runtime, `vim` global recognised, Neovim runtime on the library path, telemetry off |
+| Lua | `lua_ls` | LuaJIT runtime, `vim` global recognised, Neovim runtime on the library path, root from `.luarc.json` / `.stylua.toml` / `.git` |
 | JS/TS/CSS/HTML | `biome` | LSP proxy; also applies `source.fixAll.biome` on **every save** |
 
-All four non-Rust servers are declared with the modern `vim.lsp.config()` / `vim.lsp.enable()`
-API. Each attaches the same core keys: `gd` definition, `gr` references, `K` hover,
-`<leader>rn` rename, and `<leader>ca` code action (Go, Lua and Biome).
+Roots are resolved per buffer with `root_markers`, and completion capabilities are contributed
+once via `vim.lsp.config("*", ...)` so every server inherits them.
+
+**Keymaps lean on Neovim's built-ins.** 0.12 ships `grr` references, `grn` rename, `gra` code
+action, `gri` implementation, `grt` type definition, `grx` run codelens, `gO` document symbols,
+`<C-s>` signature help, and `K` hover. Only `gd` has no built-in equivalent, so a single
+`LspAttach` handler adds `gd` plus the two familiar aliases `<leader>rn` and `<leader>ca`.
+Nothing maps bare `gr`, which would otherwise shadow the whole `gr*` family.
 
 **nvim-cmp** drives completion from LSP, LuaSnip and buffer sources, and extends to the command
 line: `:` gets file paths plus command completion (skipping `terminal` and `TermExec`, which are
@@ -212,9 +222,11 @@ confirms, `<C-e>` aborts, `<C-j>`/`<C-k>` move, `<C-b>`/`<C-f>` scroll the docs.
 JS/TS/JSX/TSX. Format-on-save is deliberately left commented out; Biome's `fixAll` code action is
 the only thing that touches a buffer at write time.
 
-**Diagnostics** are tuned for quiet: virtual text **off**, custom sign glyphs and underline on,
-severity-sorted, never updated mid-insert, and rendered in a rounded float. `<leader>j` opens the
-float for the diagnostic under the cursor.
+**Diagnostics** are tuned for quiet: virtual text **off**, custom Nerd Font sign glyphs and
+underline on, severity-sorted, never updated mid-insert. Signs are declared through
+`vim.diagnostic.config({ signs = { text = … } })` — 0.12 dropped `sign_define()` as a way to
+configure them. `<leader>j` opens a focusable float for the diagnostic under the cursor, so `gf`
+works on any related-information link inside it.
 
 ### Debugging
 
@@ -229,13 +241,20 @@ when the session exits.
 
 ### Treesitter
 
-`master` branch, `:TSUpdate` on install, highlighting and indentation on, with parsers for
-`rust`, `lua`, `toml`, `json`, `markdown`, `markdown_inline` and `yaml`.
+On the **`main`** branch. `master` is frozen and its README states Neovim 0.12 is unsupported; it
+also caps `tree-sitter-cli` at 0.25.x, while Mason ships 0.26.x.
 
-`queries/markdown/injections.scm` overrides nvim-treesitter's own copy, whose
-`#set-lang-from-info-string!` directive is broken on Neovim 0.12 — with the override, fenced code
-blocks are highlighted by their info-string language again, and YAML/TOML frontmatter and inline
-HTML get their proper parsers.
+`main` has no module system, so `lua/plugins/treesitter.lua` does the wiring itself: it installs
+any missing parsers on startup, then a `FileType` autocmd calls `vim.treesitter.start()` and points
+`indentexpr` at the plugin. Parsers live in `stdpath("data")/site/parser` and cover `rust`, `lua`,
+`toml`, `json`, `markdown`, `markdown_inline`, `yaml`, plus `bash` and `regex` for noice's cmdline
+highlighting.
+
+The plugin declares Mason as a dependency purely for load order — the `tree-sitter` CLI that
+compiles parsers lives in Mason's `bin/`, which Mason prepends to `$PATH`.
+
+There is no longer a `queries/` override: the markdown injections fix that used to live here is
+byte-identical to what both Neovim 0.12 and treesitter `main` now ship.
 
 ### Markdown and notes
 
@@ -262,13 +281,14 @@ that `RenderMarkdownH1..H6` link to by default.
 | 2-space soft indents | tab-indented lists don't render in Obsidian |
 | `wrap` off | a wrapped row breaks the table renderer's column lines — `<leader>ow` toggles it back, with `linebreak` and `breakindent` waiting for when you do |
 | `sidescrolloff` 8 | neominimap sets it to 36 globally |
-| `foldlevel` 99 | `markdown_folding` plus `foldenable` would otherwise open every note collapsed |
-| `markdown_folding` | `<CR>` on a heading cycles its fold |
+| `foldlevel` 99 | `foldenable` would otherwise open every note collapsed |
+| treesitter `foldexpr` | replaces `markdown_folding`, whose `MarkdownFold()` asks the *regex* syntax engine whether a line sits in a code block — and 0.12's markdown ftplugin turns regex syntax off, so every `#` comment inside a fenced block became a heading |
 
 **Presenting.** `:Slides` (or `<leader>sl`) presents the current file with
 [maaslalani/slides](https://github.com/maaslalani/slides) in a terminal tab. The binary is looked
 up on `PATH`, then `$GOBIN`, then `$GOPATH/bin`, then `~/go/bin`, with a clear message if it isn't
-installed — and you get a warning rather than stale slides if the buffer has unsaved changes.
+installed — note the plugin's `go install .` build step needs `go` on `$PATH`, and is skipped
+silently if it is missing — and you get a warning rather than stale slides if the buffer has unsaved changes.
 
 ### Code screenshots
 
@@ -319,8 +339,11 @@ Leader is `<Space>`; local leader is `\`.
 
 | Key | Action |
 |---|---|
-| `gd` · `gr` · `K` | Definition / references / hover *(on LSP attach)* |
-| `<leader>rn` · `<leader>ca` | Rename / code action *(on LSP attach)* |
+| `gd` | Definition *(on LSP attach — the one with no built-in)* |
+| `grr` · `gri` · `grt` | References / implementation / type definition *(Neovim built-ins)* |
+| `grn` · `gra` · `grx` · `gO` | Rename / code action / run codelens / document symbols *(built-ins)* |
+| `K` · `<C-s>` | Hover / signature help *(built-ins)* |
+| `<leader>rn` · `<leader>ca` | Rename / code action — aliases for `grn` / `gra` |
 | `<leader>cf` | Format buffer (conform) |
 | `<leader>j` | Diagnostic float under cursor |
 
@@ -392,8 +415,9 @@ A few prefixes are declared in two places, and which-key's spec loads last:
 - `<leader>b` is a complete mapping (toggle breakpoint) *and* the Buffers group prefix, so
   `<leader>bb` and friends wait out `timeoutlen` first.
 - `<leader>ff`, `<leader>fg` and `<leader>fp` are declared twice with equivalent commands.
-- In the project picker, `<leader>td` is bound twice in the same table; **add cwd** wins, so
-  *delete project* is effectively unbound.
+
+In the project picker, `<leader>td` adds the cwd and `<leader>tD` deletes a project — they used to
+collide on the same key.
 
 ---
 
