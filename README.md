@@ -12,11 +12,15 @@ Built around Rust, Go, TypeScript and Lua, with a second life as a Markdown/Obsi
 
 ### Splash screen
 
-<img width="1920" height="1080" alt="untitled" src="https://github.com/user-attachments/assets/a28727f3-0f01-49cd-a06d-b18bdac28a96" />
+<img width="2304" height="1296" alt="Screenshot 2026-09-08 at 10 05 01 AM" src="https://github.com/user-attachments/assets/1d9883c8-db67-4fe5-97fb-a599791c7762" />
 
 ### Editor view
 
-<img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/f35aac91-f104-4e85-b8a6-badedffd90a1" />
+<img width="2304" height="1296" alt="Screenshot 2026-09-08 at 10 06 41 AM" src="https://github.com/user-attachments/assets/29c07492-85bb-4994-8d07-c23a165fcdb9" />
+
+### Themes
+
+<img width="2304" height="1296" alt="Screenshot 2026-09-08 at 10 06 52 AM" src="https://github.com/user-attachments/assets/8e33b971-a024-4ef6-b9d9-f01386dfb7f8" />
 
 ---
 
