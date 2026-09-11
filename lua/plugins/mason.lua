@@ -39,7 +39,7 @@ return {
 		opts = {
 			ensure_installed = {
 				"stylua", -- Lua formatter
-				"rustfmt", -- Rust formatter
+				-- no rustfmt: not a mason package, it ships with the toolchain and conform finds it on PATH
 				"biome", -- JS/TS/CSS formatter
 				"tree-sitter-cli", -- nvim-treesitter `main` compiles parsers with this
 			},
