@@ -65,8 +65,13 @@ lua/theme/
   colors.lua              the hand-authored palette
   palette.lua             rebuilds that palette from whichever colourscheme is active
   highlights.lua          ~350 highlight groups across every plugin used here
+  hl.lua                  highlight setter, falls back to cterm without truecolour
   lualine.lua             statusline theme derived from the palette
   init.lua                colourscheme registry, live picker, persistence
+  guitar/
+    palettes.lua          guitar's palettes, transcribed slot for slot
+    init.lua              builds a colourscheme out of one of them
+colors/guitar-*.lua       the thirty themes ported from guitar
 ```
 
 ---
@@ -90,28 +95,48 @@ The centrepiece. A hand-authored palette designed for **low visual noise**: mute
 clear highlighting on the syntax that matters, and deliberately flat, unsaturated chrome for
 everything secondary — statusline, line numbers, sidebar, floating windows.
 
-It is also visually compatible with [**guitar**](https://github.com/asinglebit/guitar), a git TUI
-client by the same author.
+It shares its themes with [**guitar**](https://github.com/asinglebit/guitar), a git TUI client by
+the same author, so the two match colour for colour.
 
 **Switching themes.** `<leader>uc` opens a live picker: the colourscheme applies as you move
 through the list, `<Esc>` puts back what you had, `<CR>` keeps it and writes it to
 `stdpath("state")/theme.txt` so it survives restarts.
 
-**31 variants across 11 colourschemes** are wired up alongside the custom one:
+**60 variants**, from two sources.
+
+Thirty come from a colourscheme plugin, and are the ones where a good Neovim port already
+exists:
 
 | Family | Variants |
 |---|---|
-| onedark | warmer *(the custom theme)* |
-| Catppuccin | Mocha, Macchiato, Frappe, Latte |
-| Tokyo Night | Night, Storm, Moon, Day |
+| Catppuccin | Dark *(Mocha)*, Light *(Latte)*, Macchiato, Frappe |
+| Tokyo Night | Night, Storm, Light *(Day)*, Moon |
 | Rose Pine | Main, Moon, Dawn |
 | Gruvbox | Dark, Light |
 | Kanagawa | Wave, Dragon, Lotus |
 | Nightfox | Night, Dusk, Nord, Tera, Carbon, Day, Dawn |
 | Nord | — |
 | Everforest | Dark, Light |
-| Dracula | Dracula, Soft |
+| Dracula | Dark, Light, Soft |
 | Oxocarbon | Dark, Light |
+
+The other thirty had no Neovim equivalent, so they are built here from
+[**guitar**](https://github.com/asinglebit/guitar)'s own palettes — a git TUI by the same
+author, and the reason the two look alike:
+
+```text
+classic            ansi               monochrome         dracula light
+monokai dark       monokai light      atom dark          atom light
+one dark warmer    vscode dark        vscode light       solarized dark
+solarized light    github dark        github light       github dark dimmed
+night owl          light owl          ayu dark           ayu mirage
+ayu light          material           palenight          zenburn
+horizon            synthwave 84       base16 tomorrow    base16 ocean
+base16 eighties    matrix
+```
+
+Together the two lists cover all 47 of guitar's built-in themes, in guitar's own order, so
+the picker and guitar's settings screen read the same.
 
 Every colourscheme plugin is declared `lazy = true`, so none of them cost anything at startup —
 lazy.nvim pulls one in on `ColorSchemePre`.
@@ -130,10 +155,27 @@ ramp from whichever theme is active:
   stock diff colours filtered out, so a theme that never set them doesn't count as having chosen.
 
 So the sidebar, telescope, which-key and lualine keep their flat shape while the syntax colours
-come from the theme. The authored `onedark warmer` entry is exempt and uses `lua/theme/colors.lua`
-verbatim.
+come from the theme.
 
-A `ColorScheme` autocmd re-derives the palette, reapplies all highlights and rebuilds lualine, so
+**The guitar themes skip that step entirely.** Nothing is derived for them: `palette.lua` hands
+back guitar's values untouched, so the colours are guitar's to the byte. `lua/theme/guitar`
+maps guitar's 32 slots onto the palette keys the rest of the config already speaks:
+
+- **Greys by ramp position, not by name.** Guitar numbers its ramp `950…50` and this config
+  `900…100`, but both run background to foreground in eleven steps, so step *n* maps to step
+  *n*. Measured against the one palette that exists on both sides — guitar's `vscode dark` and
+  `colors.lua`, which are the same VS Code Dark+ — matching by position is 3.3× closer than
+  matching by name.
+- **Accents by meaning.** `red` is deleted and errors, `green` added, `blue` modified, `orange`
+  conflicts and warnings, `dark_red` and `light_green_900` the diff backgrounds, `border` the
+  line numbers and splits, `grey_800` the selection, `grey_900` the cursor line — the same jobs
+  they do in guitar. That mapping reproduces all nine of `colors.lua`'s accents exactly.
+- **`Normal` takes guitar's `text`**, except where a theme keeps `text` deliberately dim
+  (`vscode dark`, `classic`), where it takes `highlighted` instead.
+- `ansi` and `monochrome` are terminal palettes rather than RGB, so they turn `termguicolors`
+  off and paint with `ctermfg`/`ctermbg`; every other theme turns it back on.
+
+A `ColorScheme` autocmd rebuilds the palette, reapplies all highlights and rebuilds lualine, so
 a switch is instant and complete.
 
 ### UI

@@ -193,16 +193,22 @@ local function derive()
 	return c
 end
 
-local cache, authored
+local cache, source
 
----Discard the derived palette; `use_authored` returns theme/colors.lua verbatim instead.
-function M.refresh(use_authored)
-	cache, authored = nil, use_authored
+---Discard the built palette; `source` decides where the next one comes from.
+function M.refresh(next_source)
+	cache, source = nil, next_source
 end
 
 function M.current()
 	if not cache then
-		cache = authored and base or derive()
+		if source == "guitar" then
+			cache = require("theme.guitar").palette()
+		elseif source == "authored" then
+			cache = base
+		else
+			cache = derive()
+		end
 	end
 	return cache
 end

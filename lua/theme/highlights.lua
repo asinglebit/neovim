@@ -1,8 +1,9 @@
-local hl = vim.api.nvim_set_hl
 local theme = {}
 
 theme.set_highlights = function(colors)
 	colors = colors or require("theme.palette").current()
+	-- the ANSI themes run without truecolour, where gui values are ignored
+	local hl = require("theme.hl").setter()
 
 	hl(0, "DashboardChart", { fg = colors.vscDimHighlight })
 	hl(0, "DashboardCommits", { fg = colors.vscDimHighlight })

@@ -1,6 +1,5 @@
 -- lazy.nvim pulls a colorscheme plugin in on ColorSchemePre, so none of these load at startup
 return {
-	{ "navarasu/onedark.nvim", lazy = true, opts = { style = "warmer" } },
 	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
 	{ "folke/tokyonight.nvim", lazy = true },
 	{ "rose-pine/neovim", name = "rose-pine", lazy = true },
