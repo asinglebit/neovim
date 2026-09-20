@@ -135,7 +135,7 @@ horizon            synthwave 84       base16 tomorrow    base16 ocean
 base16 eighties    matrix
 ```
 
-Together the two lists cover all 47 of guitar's built-in themes, in guitar's own order, so
+Together the two lists cover all 60 of guitar's built-in themes, in guitar's own order, so
 the picker and guitar's settings screen read the same.
 
 Every colourscheme plugin is declared `lazy = true`, so none of them cost anything at startup —
