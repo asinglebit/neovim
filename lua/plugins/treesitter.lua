@@ -11,6 +11,7 @@ local PARSERS = {
 	"yaml",
 	"bash", -- both requested by noice for cmdline highlighting
 	"regex",
+	"html", -- snacks.image finds the <img> tags in markdown through it
 }
 
 return {

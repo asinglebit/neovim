@@ -126,7 +126,6 @@ return {
 					config = {
 						use_float = true,
 						use_snacks_image = true,
-						use_image_nvim = true,
 					},
 				},
 				["S"] = "open_split",

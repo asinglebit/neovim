@@ -15,7 +15,7 @@ return {
 			heading = { sign = false, width = "block", right_pad = 2 },
 			code = { sign = false, width = "block", left_pad = 2, right_pad = 2 },
 			pipe_table = { preset = "round" },
-			-- the vault has no HTML and no maths; <u32>/<Vec3> are Rust generics in code spans
+			-- no maths, and no HTML but the <img> tags snacks.image draws; <u32>/<Vec3> are Rust generics in code spans
 			html = { enabled = false },
 			latex = { enabled = false },
 		},

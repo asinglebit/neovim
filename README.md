@@ -32,7 +32,7 @@ Built around Rust, Go, TypeScript and Lua, with a second life as a Markdown/Obsi
 | **git**, **make**, a **C compiler** | lazy.nvim bootstrap; `make` builds `telescope-fzf-native`; the compiler builds treesitter parsers |
 | **A Nerd Font** | icons in neo-tree, lualine, the dashboard and diagnostics |
 | **Language toolchains** | `cargo` for Rust, `go` for Go, `node` for the TypeScript server |
-| **Optional** | [`silicon`](https://github.com/Aloxaf/silicon) for code screenshots; `go` on `$PATH` to build [`slides`](https://github.com/maaslalani/slides) |
+| **Optional** | [`silicon`](https://github.com/Aloxaf/silicon) for code screenshots; `go` on `$PATH` to build [`slides`](https://github.com/maaslalani/slides); for images, a terminal that speaks the kitty graphics protocol (Ghostty, kitty), ImageMagick's `magick` for anything that isn't a PNG, `gs` for PDFs and `curl` for images linked by URL |
 
 Language servers, debug adapters, formatters and the `tree-sitter` CLI are installed by Mason on
 first launch — nothing to set up by hand. Mason prepends its `bin/` to `$PATH`, which is how
@@ -209,7 +209,7 @@ a switch is instant and complete.
 | Buffers | Open buffers as a tree, `d` to delete |
 | Git | Floating window with `ga` add, `A` add all, `gu` unstage, `gr` revert, `gc` commit, `gp` push, `gg` commit and push, `gU` undo last commit |
 
-- `h` / `l` collapse and open, `z` closes everything, `P` opens a floating preview.
+- `h` / `l` collapse and open, `z` closes everything, `P` opens a floating preview, images included.
 - `S` / `s` open in a horizontal / vertical split, `t` in a tab, `w` with the window picker.
 - Full file management inline: `a` add, `A` add directory, `d` delete, `r` rename, `b` rename
   basename, `y` / `x` / `p` clipboard, `c` copy, `m` move.
@@ -290,7 +290,7 @@ also caps `tree-sitter-cli` at 0.25.x, while Mason ships 0.26.x.
 any missing parsers on startup, then a `FileType` autocmd calls `vim.treesitter.start()` and points
 `indentexpr` at the plugin. Parsers live in `stdpath("data")/site/parser` and cover `rust`, `lua`,
 `toml`, `json`, `markdown`, `markdown_inline`, `yaml`, plus `bash` and `regex` for noice's cmdline
-highlighting.
+highlighting, and `html` so snacks.image can find the `<img>` tags in notes.
 
 The plugin declares Mason as a dependency purely for load order — the `tree-sitter` CLI that
 compiles parsers lives in Mason's `bin/`, which Mason prepends to `$PATH`.
@@ -311,8 +311,8 @@ Telescope as its picker:
 
 **render-markdown.nvim** owns the rendering, on the `obsidian` preset — rendered in every mode,
 like Obsidian's live preview. Headings and code blocks are block-width with padding, tables get
-rounded borders, and HTML and LaTeX are off (the vault has neither, and `<u32>` / `<Vec3>` are
-Rust generics in code spans, not tags). `<leader>or` toggles rendering per buffer. Heading
+rounded borders, and HTML and LaTeX are off (the vault has no maths, its only HTML is the `<img>`
+tags snacks.image draws, and `<u32>` / `<Vec3>` are Rust generics in code spans, not tags). `<leader>or` toggles rendering per buffer. Heading
 backgrounds and bullets are themed from the palette, replacing the far-too-loud `Diff*` defaults
 that `RenderMarkdownH1..H6` link to by default.
 
@@ -331,6 +331,26 @@ that `RenderMarkdownH1..H6` link to by default.
 up on `PATH`, then `$GOBIN`, then `$GOPATH/bin`, then `~/go/bin`, with a clear message if it isn't
 installed — note the plugin's `go install .` build step needs `go` on `$PATH`, and is skipped
 silently if it is missing — and you get a warning rather than stale slides if the buffer has unsaved changes.
+
+### Images
+
+**snacks.nvim**, for its `image` module only — no other snack is switched on. It draws with the
+kitty graphics protocol, so it needs a terminal that speaks it, such as Ghostty or kitty.
+
+- Opening a `png`, `jpg`, `gif`, `webp`, `pdf` and the like shows the picture rather than its bytes.
+- Markdown draws images inline, beneath the line that embeds them: `![](…)`, Obsidian's `![[…]]`
+  and HTML `<img>` tags. Remote URLs are fetched once and cached in `stdpath("cache")/snacks/image`.
+- In the vault, a bare name such as `![[Pasted image.png]]` goes through obsidian.nvim's own
+  attachment lookup — the one `<leader>oi` saves through — so it is found from any note, whatever
+  the working directory. Elsewhere a path is tried against the note's directory, the working
+  directory, and an `assets/`, `images/` or similar folder in either.
+- neo-tree's `P` preview shows images the same way.
+
+**No tmux.conf change is needed.** Inside tmux, snacks wraps its escape sequences in tmux's
+passthrough and sets `allow-passthrough all` on its own pane. It learns which terminal sits outside
+by asking it (`XTVERSION`) through that same passthrough, so the config never names a terminal.
+`:checkhealth snacks` shows what it found; its errors about LaTeX, Mermaid and the snacks left
+switched off do not affect images.
 
 ### Code screenshots
 
